@@ -54,3 +54,8 @@ pre code {
     font-size: 36px;
   }
 }
+
+#consoleBlock {
+  word-break: break-all;
+  white-space: break-spaces;
+}
