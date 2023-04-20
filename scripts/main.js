@@ -58,7 +58,7 @@ async function handleLoading() {
       swRegistration = swReg;
       str += 'check swRegistration ' + (swReg ? true : false) + '\n';
       str += 'check pushManager ' + (swReg.pushManager ? true : false) + '\n';
-      str += 'check safari ' + (swReg.safari ? true : false) + '\n';
+      str += 'swReg' + JSON.stringify(swReg, getCircularReplacer(), '\t');
       initializeUI();
       consoleBlock.innerText = consoleBlock.innerText + str;
     })
@@ -86,20 +86,22 @@ function initializeUI() {
   });
 
   // Set the initial subscription value
-  swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
-    isSubscribed = !(subscription === null);
-
-    updateSubscriptionOnServer(subscription);
-
-    if (isSubscribed) {
-      strConsole += 'User IS subscribed.\n';
-    } else {
-      strConsole += 'User is NOT subscribed.\n';
-    }
-    consoleBlock.innerText = consoleBlock.innerText + strConsole;
-
-    updateBtn();
+  navigator.serviceWorker.ready.then((serviceWorkerRegistration) => {
+    serviceWorkerRegistration.pushManager.getSubscription()
+    .then(function(subscription) {
+      isSubscribed = !(subscription === null);
+  
+      updateSubscriptionOnServer(subscription);
+  
+      if (isSubscribed) {
+        strConsole += 'User IS subscribed.\n';
+      } else {
+        strConsole += 'User is NOT subscribed.\n';
+      }
+      consoleBlock.innerText = consoleBlock.innerText + strConsole;
+  
+      updateBtn();
+    })
   });
   consoleBlock.innerText = consoleBlock.innerText + strConsole;
 }
