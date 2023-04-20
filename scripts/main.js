@@ -41,7 +41,7 @@ const getCircularReplacer = () => {
 
 
 // Kiểm tra xem trình duyệt có hỗ trợ push manage không
-function handleLoading() {
+async function handleLoading() {
   let strConsole = '';
   const consoleWindow = JSON.stringify(window, getCircularReplacer(), '\t');
   strConsole += 'serviceWorker ' + ('serviceWorker' in navigator) + ', PushManager ' + ('PushManager' in window) + ', window \n' + consoleWindow + '\n';
@@ -49,7 +49,7 @@ function handleLoading() {
     let str = ''
     strConsole += 'Service Worker and Push are supported\n';
 
-    navigator.serviceWorker.register('sw.js')
+    await navigator.serviceWorker.register('/sw.js')
     .then(function(swReg) {
       str += ('Service Worker is registered\n');
 
@@ -58,6 +58,7 @@ function handleLoading() {
       swRegistration = swReg;
       str += 'check swRegistration ' + (swReg ? true : false) + '\n';
       str += 'check pushManager ' + (swReg.pushManager ? true : false) + '\n';
+      str += 'check safari ' + (swReg.safari ? true : false) + '\n';
       initializeUI();
       consoleBlock.innerText = consoleBlock.innerText + str;
     })
