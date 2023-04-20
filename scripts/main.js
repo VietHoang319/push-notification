@@ -52,9 +52,12 @@ function handleLoading() {
     navigator.serviceWorker.register('sw.js')
     .then(function(swReg) {
       str += ('Service Worker is registered\n');
+
       console.log('Service Worker is registered', swReg)
 
       swRegistration = swReg;
+      str += 'check swRegistration ' + (swReg ? true : false) + '\n';
+      str += 'check pushManager ' + (swReg.pushManager ? true : false) + '\n';
       initializeUI();
       consoleBlock.innerText = consoleBlock.innerText + str;
     })
@@ -72,8 +75,6 @@ function handleLoading() {
 // Kiểm tra xem người dùng đã đăng ký chưa
 function initializeUI() {
   let strConsole = '';
-  strConsole += 'check swRegistration ' + (swRegistration ? true : false) + '\n';
-  strConsole += 'check pushManager ' + (swRegistration.pushManager ? true : false) + '\n';
   pushButton.addEventListener('click', function() {
     pushButton.disabled = true;
     if (isSubscribed) {
