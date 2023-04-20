@@ -1,31 +1,6 @@
-/*
-*
-*  Push Notifications codelab
-*  Copyright 2015 Google Inc. All rights reserved.
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      https://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License
-*
-*/
-
-/* eslint-env browser, es6 */
-
 'use strict';
-
-// eslint-disable-next-line max-len
 const applicationServerPublicKey = 'BJIwNdfYpmsbYHuSSvPVTV5_PsUT2Bnkx-zoitZmM-3nCndzuy5ugoefx6qnShLcdL5Zh4NuFsq_qBb7i4XDWeQ';
 
-
-// eslint-disable-next-line max-len
 console.log('serviceWorker', 'serviceWorker' in navigator, ', PushManager', 'PushManager' in window, ', window', window);
 
 const pushButton = document.querySelector('.js-push-btn');
@@ -52,7 +27,7 @@ function urlB64ToUint8Array(base64String) {
 
 // console log window
 const getCircularReplacer = () => {
-  const seen = new WeakSet();
+  const seen = new Set();
   return (key, value) => {
       if (typeof value === 'object' && value !== null) {
           if (seen.has(value)) {
@@ -66,11 +41,9 @@ const getCircularReplacer = () => {
 
 
 // Kiểm tra xem trình duyệt có hỗ trợ push manage không
-// eslint-disable-next-line max-len
 function handleLoading() {
   let strConsole = '';
   const consoleWindow = JSON.stringify(window, getCircularReplacer(), '\t');
-  // eslint-disable-next-line max-len
   strConsole += 'serviceWorker ' + ('serviceWorker' in navigator) + ', PushManager ' + ('PushManager' in window) + ', window \n' + consoleWindow + '\n';
   if ('serviceWorker' in navigator && 'PushManager' in window) {
     let str = ''
