@@ -45,7 +45,7 @@ async function handleLoading() {
   let strConsole = '';
   const consoleWindow = JSON.stringify(window, getCircularReplacer(), '\t');
   strConsole += 'serviceWorker ' + ('serviceWorker' in navigator) + ', PushManager ' + ('PushManager' in window) + ', window \n' + consoleWindow + '\n';
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
     let str = ''
     strConsole += 'Service Worker and Push are supported\n';
 
