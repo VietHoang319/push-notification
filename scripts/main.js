@@ -69,7 +69,7 @@ const getCircularReplacer = () => {
 // eslint-disable-next-line max-len
 function handleLoading() {
   let strConsole = '';
-  const consoleWindow = JSON.stringify(window, getCircularReplacer());
+  const consoleWindow = JSON.stringify(window, getCircularReplacer(), '\t');
   // eslint-disable-next-line max-len
   strConsole += 'serviceWorker ' + ('serviceWorker' in navigator) + ', PushManager ' + ('PushManager' in window) + ', window \n' + consoleWindow + '\n';
   if ('serviceWorker' in navigator && 'PushManager' in window) {
