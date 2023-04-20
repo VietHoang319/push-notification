@@ -59,7 +59,7 @@ function handleLoading() {
       consoleBlock.innerText = consoleBlock.innerText + str;
     })
     .catch(function(error) {
-      str += ('Service Worker Error' + error + '\n');
+      str += ('Service Worker Error: ' + error + '\n');
       consoleBlock.innerText = consoleBlock.innerText + str;
     });
   } else {
@@ -72,6 +72,8 @@ function handleLoading() {
 // Kiểm tra xem người dùng đã đăng ký chưa
 function initializeUI() {
   let strConsole = '';
+  strConsole += 'check swRegistration ' + (swRegistration ? true : false) + '\n';
+  strConsole += 'check pushManager ' + (swRegistration.pushManager ? true : false) + '\n';
   pushButton.addEventListener('click', function() {
     pushButton.disabled = true;
     if (isSubscribed) {
