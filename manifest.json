@@ -1,0 +1,7 @@
+{
+  "name": "test",
+  "short_name": "test",
+  "lang": "ja",
+  "display": "standalone",
+  "start_url": "/"
+}
