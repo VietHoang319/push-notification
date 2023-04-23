@@ -164,7 +164,7 @@ function subscribeUser() {
     applicationServerKey: applicationServerKey
   })
   .then(function(subscription) {
-    strConsole += ('User is subscribed\n' + JSON.stringify(subscription) + '\n');
+    strConsole += ('User is subscribed\n');
     consoleBlock.innerText = consoleBlock.innerText + strConsole;
 
     updateSubscriptionOnServer(subscription);
