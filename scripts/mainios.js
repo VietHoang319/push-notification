@@ -1,5 +1,5 @@
 'use strict';
-const applicationServerPublicKey = 'BJIwNdfYpmsbYHuSSvPVTV5_PsUT2Bnkx-zoitZmM-3nCndzuy5ugoefx6qnShLcdL5Zh4NuFsq_qBb7i4XDWeQ';
+const applicationServerPublicKey = 'BI7N1CLR5EsqDjnpToAUNS-c4ugUp6lwCX0gvDZ_w1J17bTdo_gC3Cym6kKsRZNhJHfyGedlBTD35EVyzYFtglU';
 
 console.log('serviceWorker', 'serviceWorker' in navigator, ', PushManager', 'PushManager' in window, ', window', window);
 
