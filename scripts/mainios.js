@@ -42,7 +42,6 @@ const getCircularReplacer = () => {
 
 // Kiểm tra xem trình duyệt có hỗ trợ push manage không
 async function handleLoading() {
-  const consoleWindow = JSON.stringify(window, getCircularReplacer(), '\t');
   if (checkIsWebPushSupported) {
     if (window.navigator.serviceWorker !== undefined) {
       await window.navigator.serviceWorker.register('/sw.js')
