@@ -27,8 +27,8 @@ self.addEventListener('notificationclick', function(event) {
         type: "window",
       })
       .then((clientList) => {
-        console.log(client);
         for (const client of clientList) {
+          console.log(client);
           if (client.url === "/" && "focus" in client) return client.focus();
         }
         if (clients.openWindow) return clients.openWindow("/");
