@@ -367,7 +367,7 @@ function unsubscribeUser() {
 }
 ```
 
-#Tài liệu tham khảo
+# Tài liệu tham khảo
 - https://caniuse.com/notifications
 - https://developer.apple.com/documentation/usernotifications/sending_web_push_notifications_in_safari_and_other_browsers?language=objc
 - https://codelabs.developers.google.com/codelabs/push-notifications#0
