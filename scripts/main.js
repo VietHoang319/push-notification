@@ -1,5 +1,5 @@
 'use strict';
-const applicationServerPublicKey = 'BJIwNdfYpmsbYHuSSvPVTV5_PsUT2Bnkx-zoitZmM-3nCndzuy5ugoefx6qnShLcdL5Zh4NuFsq_qBb7i4XDWeQ';
+const applicationServerPublicKey = 'BI7N1CLR5EsqDjnpToAUNS-c4ugUp6lwCX0gvDZ_w1J17bTdo_gC3Cym6kKsRZNhJHfyGedlBTD35EVyzYFtglU';
 
 console.log('serviceWorker', 'serviceWorker' in navigator, ', PushManager', 'PushManager' in window, ', window', window);
 
@@ -42,36 +42,63 @@ const getCircularReplacer = () => {
 
 // Kiểm tra xem trình duyệt có hỗ trợ push manage không
 async function handleLoading() {
-  let strConsole = '';
-  const consoleWindow = JSON.stringify(window, getCircularReplacer(), '\t');
-  strConsole += 'serviceWorker ' + ('serviceWorker' in navigator) + ', PushManager ' + ('PushManager' in window) + ', window \n' + consoleWindow + '\n';
-  if ('serviceWorker' in navigator && 'PushManager' in window) {
-    let str = ''
-    strConsole += 'Service Worker and Push are supported\n';
-
-    await navigator.serviceWorker.register('/sw.js')
-    .then(function(swReg) {
-      str += ('Service Worker is registered\n');
-
-      console.log('Service Worker is registered', swReg)
-
-      swRegistration = swReg;
-      str += 'check swRegistration ' + (swReg ? true : false) + '\n';
-      str += 'check pushManager ' + (swReg.pushManager ? true : false) + '\n';
-      str += 'swReg' + JSON.stringify(swReg, getCircularReplacer(), '\t');
-      initializeUI();
-      consoleBlock.innerText = consoleBlock.innerText + str;
-    })
-    .catch(function(error) {
-      str += ('Service Worker Error: ' + error + '\n');
-      consoleBlock.innerText = consoleBlock.innerText + str;
-    });
+  if (checkIsWebPushSupported) {
+    if (window.navigator.serviceWorker !== undefined) {
+      await window.navigator.serviceWorker.register('/sw.js')
+      .then(function(swReg) {
+        let str = ('Service Worker is registered\n');
+  
+        console.log('Service Worker is registered', swReg)
+  
+        swRegistration = swReg;
+        initializeUI();
+        consoleBlock.innerText = consoleBlock.innerText + str;
+      })
+      .catch(function(error) {
+        let str = ('Service Worker Error: ' + error + '\n');
+        consoleBlock.innerText = consoleBlock.innerText + str;
+      });
+    }
   } else {
-    strConsole += 'Push messaging is not supported\n';
-    pushButton.textContent = 'Push Not Supported\n';
+    return;
   }
-  consoleBlock.innerText = consoleBlock.innerText + strConsole;
 }
+
+async function checkIsWebPushSupported() {
+  let str = '';
+  if (!('Notification' in window)) {
+    pushButton.textContent = 'Notification Not Supported';
+    return false;
+  } else if (!('serviceWorker' in navigator)) {
+    pushButton.textContent = 'Service worker Not Supported';
+    return false;
+  } else {
+    try {
+      const sw = await navigator.serviceWorker.ready;
+        if (!('pushManager' in sw)) {
+          pushButton.textContent = 'Push Manager Not Supported';
+          return false;
+        }
+        return true;
+      } catch (error) {
+        str += ('Error when check supported: ' + error + '\n');
+        consoleBlock.innerText = consoleBlock.innerText + str;
+        pushButton.textContent = 'Error supported';
+        return false;
+      }
+    }
+}
+
+// get key
+const getVapidPublicKey = async () => {
+  const res = await fetch("/api/webpush/vapid_public_key");
+  if (!res.ok) {
+    let str = 'error get key';
+    consoleBlock.innerText = consoleBlock.innerText + str;
+    throw new Error("VAPID公開鍵取得失敗");
+  }
+  return (await res.json()).public_key;
+};
 
 // Kiểm tra xem người dùng đã đăng ký chưa
 function initializeUI() {
@@ -109,9 +136,8 @@ function initializeUI() {
 // Thay đổi text của button tùy thuộc vào người dùng đã đăng ký chưa
 function updateBtn() {
   let strConsole = '';
-  console.log(Notification.permission);
-  strConsole += (Notification.permission + '\n');
-  if (Notification.permission === 'denied') {
+  strConsole += (window.Notification.permission + '\n');
+  if (window.Notification.permission === 'denied') {
     pushButton.textContent = 'Push Messaging Blocked';
     pushButton.disabled = true;
     updateSubscriptionOnServer(null);
@@ -137,7 +163,7 @@ function subscribeUser() {
     applicationServerKey: applicationServerKey
   })
   .then(function(subscription) {
-    strConsole += ('User is subscribed\n' + JSON.stringify(subscription) + '\n');
+    strConsole += ('User is subscribed\n');
     consoleBlock.innerText = consoleBlock.innerText + strConsole;
 
     updateSubscriptionOnServer(subscription);
