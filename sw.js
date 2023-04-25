@@ -11,7 +11,6 @@ self.addEventListener('push', function(event) {
     badge: 'images/badge.png'
   };
 
-  // eslint-disable-next-line max-len
   const notificationPromise = self.registration.showNotification(title, options);
   event.waitUntil(notificationPromise);
 });
