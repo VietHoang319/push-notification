@@ -25,22 +25,6 @@ function urlB64ToUint8Array(base64String) {
   return outputArray;
 }
 
-// console log window
-const getCircularReplacer = () => {
-  const seen = new Set();
-  return (key, value) => {
-      if (typeof value === 'object' && value !== null) {
-          if (seen.has(value)) {
-              return;
-          }
-          seen.add(value);
-      }
-      return value;
-  };
-};
-
-
-// Kiểm tra xem trình duyệt có hỗ trợ push manage không
 async function handleLoading() {
   if (checkIsWebPushSupported) {
     if (window.navigator.serviceWorker !== undefined) {
@@ -100,7 +84,6 @@ const getVapidPublicKey = async () => {
   return (await res.json()).public_key;
 };
 
-// Kiểm tra xem người dùng đã đăng ký chưa
 function initializeUI() {
   let strConsole = '';
   pushButton.addEventListener('click', function() {
