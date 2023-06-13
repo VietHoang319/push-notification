@@ -74,6 +74,8 @@ Việc gửi push notification liên tục hoặc notify không có nội dung c
 
 # Các bước thực hiện
 
+![sequence](out/push-notification/push-notification.png)
+
 ## Khởi tạo
 
 - Đầu tiên, ta cần tạo một file trống [sw.js](sw.js) được đặt cùng cấp thư mục với file [index.html](index.html). Đây sẽ là [service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) của bạn.
@@ -312,8 +314,11 @@ self.addEventListener('push', function(event) {
   event.waitUntil(notificationPromise);
 });
 ```
+
 ### Xử lý sự kiện click vào thông báo trong [sw.js](sw.js)
+
 Bắt sự kiện `notificationclick` khi thông báo hiện lên sẽ đóng thông báo và kiểm tra xem trình duyệt có đang mở url đặt trước không. Nếu có thực hiện focus vào url đó, nếu không thì mở url đó lên.
+
 ```JavaScript
 self.addEventListener('notificationclick', function(event) {
   console.log('[Service Worker] Notification click received.');
@@ -335,7 +340,9 @@ self.addEventListener('notificationclick', function(event) {
   );
 });
 ```
+
 ## Thực hiện gửi thông báo cho người dùng
+
 Truy cập vào website https://web-push-codelab.glitch.me/ dán thông tin sau khi đăng ký xong ở trên màn hình gồm (endpoint, expirationTime, keys) vào phần `Subscription to Send To`. Nhập nội dung muốn gửi đến vào phần `Text to Send` và nhấn "SEND PUSH MESSAGE"
 
 ![get public key](result-image/send-notification.png)
@@ -368,6 +375,7 @@ function unsubscribeUser() {
 ```
 
 # Tài liệu tham khảo
+
 - https://caniuse.com/notifications
 - https://developer.apple.com/documentation/usernotifications/sending_web_push_notifications_in_safari_and_other_browsers?language=objc
 - https://codelabs.developers.google.com/codelabs/push-notifications#0

@@ -1,0 +1,43 @@
+@startuml
+autonumber
+actor User
+participant ScreenRegisterNotification
+participant ServiceWorker
+participant API
+
+ScreenRegisterNotification -> ScreenRegisterNotification: kiểm tra browser có hỗ trợ push notification không, và khởi tạo giao diện
+ScreenRegisterNotification -> ServiceWorker: đăng ký service worker
+
+== Đăng ký nhận thông báo ==
+User -> ScreenRegisterNotification++: click button yêu cầu nhận thông báo
+ScreenRegisterNotification -> API ++: call api get public key
+API --> ScreenRegisterNotification --: public key
+ScreenRegisterNotification -> ServiceWorker ++: subscribe()
+ServiceWorker --> User++: yêu cầu cho phép nhận thông báo
+alt không cho phép nhận thông báo
+  User -> ServiceWorker: không cho phép nhận thông báo
+  ServiceWorker --> ScreenRegisterNotification: error
+  ScreenRegisterNotification -> ScreenRegisterNotification: cập nhật lại giao diện
+else
+  User -> ServiceWorker --: cho phép nhận thông báo
+  ServiceWorker -> ScreenRegisterNotification --: thông tin endpoint, key
+  ScreenRegisterNotification -> API: call api lưu thông tin
+  ScreenRegisterNotification --> User --: cập nhật giao diện
+end
+
+== Nhận thông báo ==
+API --> ServiceWorker ++: nhận message từ API gửi về
+ServiceWorker --> User --: hiện thị notification
+
+== Click vào thông báo ==
+User -> ServiceWorker ++: Click vào notification
+ServiceWorker -> User --: mở trình duyệt
+
+== Hủy nhận thông báo ==
+User -> ScreenRegisterNotification ++: click button yêu cầu hủy nhận thông báo
+ScreenRegisterNotification -> ServiceWorker ++: getSubscription()
+ServiceWorker --> ScreenRegisterNotification --: thông tin subscription
+ScreenRegisterNotification -> ServiceWorker: subscription.unsubscribe();
+ScreenRegisterNotification -> API: call api lưu thông tin
+ScreenRegisterNotification --> User --: cập nhật giao diện
+@enduml
